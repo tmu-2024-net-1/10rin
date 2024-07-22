@@ -3,12 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>github pagesのテスト</title>
+    <title>Fullscreen Canvas</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    (function(d) {
+        var config = {
+            kitId: 'mhi2jzr', 
+            scriptTimeout: 3000,
+            async: true
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    })(document);
+    
+    </script>
 </head>
 <body>
-    <h1>こんにちは</h1>
-    <footer>
-        <div>Nonokawa Rin</div>
-    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <script>
+
+        let images = [];
+        let imageNames = ['a', 'i', 'u', 'e', 'o', 'ka', 'ki', 'ku', 'ke', 'ko', 
+                        'sa', 'si', 'su', 'se', 'so', 'ta', 'ti', 'tu', 'te', 'to', 
+                        'na', 'ni', 'nu', 'ne', 'no', 'ha', 'hi', 'hu', 'he', 'ho', 
+                        'ma', 'mi', 'mu', 'me', 'mo', 'ya', 'yu', 'yo', 'ra', 'ri', 
+                        'ru', 're', 'ro', 'wa', 'wo', 'nn'];
+        let kana = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ',
+                    'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と',
+                    'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ',
+                    'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り',
+                    'る', 'れ', 'ろ', 'わ', 'を', 'ん'];
+            
+
+
+        // 画像はキャンバスのsetupより前にpreloadする
+        function preload(){
+            for (let i = 0; i < imageNames.length; i++) {
+                images[i] = loadImage(`image/${imageNames[i]}.jpg`);
+            }
+        }
+
+        let clickedImages = [];
+        let displayText = '';
+        let clickedImages_alphabet = [];
+
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+
+            // ボタンの作成
+            textFont("'seiwa-do-l'"); 
+            button = createButton("発行");
+            button.mousePressed(startreceipt);
+            button.position(width - width / 8, height - height / 7);
+            button.style("width", "100px");
+            button.style("height", "100px");
+            button.style("border-radius", "100px");
+            button.style("background", "#fffffff");
+            button.style("border", "none");
+        }
+
+        let pushbutton = false;
+
+        function draw() {
+            background(255);
+
+
+
+            if(pushbutton){
+                kaikeigamen();
+            }else{
+
+            
+            // 日本語のフォント指定
+            textFont("'seiwa-do-l'"); 
+
+            // 位置設定
+            rectMode(CENTER); 
+            imageMode(CENTER);
+            translate(width / 2, height / 2);
+
+            // 基準となるウィンドウサイズ
+            let baseWidth = 1100;
+            let baseHeight = 790;
+
+            // 位置の比率を計算
+            let ratioX = windowWidth / baseWidth;
+            let ratioY = windowHeight / baseHeight;
+
+            for (let i = 0; i < 9; i++) {
+                let x = (-480 + i * 120) * ratioX;
+                let y = -260 * ratioY;
+                image(images[i], x, y, windowWidth * 0.1, windowWidth * 0.09);
+                if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, x, y) < windowWidth * 0.05) {
+                    addClickedImage(i);
+                }
+            }
+            for (let i = 9; i < 18; i++) {
+                let x = (-480 + (i - 9) * 120) * ratioX;
+                let y = -140 * ratioY;
+                image(images[i], x, y, windowWidth * 0.1, windowWidth * 0.09);
+                if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, x, y) < windowWidth * 0.05) {
+                    addClickedImage(i);
+                }
+            }
+            for (let i = 18; i < 27; i++) {
+                let x = (-480 + (i - 18) * 120) * ratioX;
+                let y = -20 * ratioY;
+                image(images[i], x, y, windowWidth * 0.1, windowWidth * 0.09);
+                if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, x, y) < windowWidth * 0.05) {
+                    addClickedImage(i);
+                }
+            }
+            for (let i = 27; i < 36; i++) {
+                let x = (-480 + (i - 27) * 120) * ratioX;
+                let y = 100 * ratioY;
+                image(images[i], x, y, windowWidth * 0.1, windowWidth * 0.09);
+                if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, x, y) < windowWidth * 0.05) {
+                    addClickedImage(i);
+                }
+            }
+            for (let i = 36; i < 45; i++) {
+                let x = (-480 + (i - 36) * 120) * ratioX;
+                let y = 220 * ratioY;
+                image(images[i], x, y, windowWidth * 0.1, windowWidth * 0.09);
+                if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, x, y) < windowWidth * 0.05) {
+                    addClickedImage(i);
+                }
+            }
+            image(images[45], 0, 340 * ratioY, windowWidth * 0.1, windowWidth * 0.09);
+            if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, 0, 340 * ratioY) < windowWidth * 0.05) {
+                addClickedImage(45);
+            }
+                    
+
+            // テキストを左上に表示するためにpush/popを使用
+            push();
+            resetMatrix(); 
+            fill(50);
+            textFont("'seiwa-do-l'");
+            textAlign(LEFT, TOP);
+            textSize(50);
+            text('ゆびもじきろく', 10, 10);
+            textSize(20);
+            text('好きな図形をクリックして', 500, 30);
+
+
+            // クリックされた画像の記録を表示
+            textSize(30);
+            text(displayText, 10, 70);
+            pop();
+
+        }
+        }
+
+        function addClickedImage(index) {
+    if (clickedImages.length < 4 && !clickedImages.includes(kana[index])) {
+        clickedImages.push(kana[index]);
+        clickedImages_alphabet.push(imageNames[index]);
+        // displayText = clickedImages.join(', ');
+    }
+}
+        function startreceipt(){
+            pushbutton = true;
+
+        }
+
+        function kaikeigamen(){
+    // 画面の中心に四角形を描画
+    fill(255); 
+    //直線にする
+    drawingContext.setLineDash([]);
+
+    //位置設定
+    rectMode(CENTER); // 長方形の基準点を中央に設定
+    imageMode(CENTER);
+    translate(width / 2, height / 2 );//ここで位置を決めるとスケールで位置が変わらない
+
+    //大四角
+    stroke(0);
+    strokeWeight(1);
+    fill(255); 
+    rect(0, 0, 400, 700);
+
+    //領収書の四角
+    stroke(0);
+    strokeWeight(2);
+    rect(0, -200, 200, 40);
+
+    //文字
+    noStroke();
+    fill(0);
+
+    // テキストを左上に表示するためにpush/popを使用
+    push();
+    resetMatrix(); // 座標系をリセット
+    textAlign(LEFT, TOP);
+    textSize(50);
+    textFont("'seiwa-do-l'");
+    text('ゆびもじきろく', 10, 10);
+    pop();
+
+    //トップ文字
+    textAlign(CENTER, CENTER); // テキストの配置
+    textSize(50);
+    text('ゆびもじ',0,-300);
+
+    textSize(15);
+    text('東京都日野市',0,-260);
+    text('2024年7月8日（月）23:33',0,-240);
+    
+    //中身
+    //日本語
+    textAlign(LEFT); // テキストの配置左ぞろえ
+
+    console.log(clickedImages_alphabet[0]);
+
+    //指文字の描写を行うfor文 
+    let yOffset = -130; // y座標の初期値
+    let spacing = 80; // 各項目間のスペースの大きさ
+
+    for (let i = 0; i < clickedImages.length; i++) {
+        let imgIndex = imageNames.indexOf(clickedImages_alphabet[i]);
+        if (imgIndex !== -1) {
+            image(images[imgIndex], -150, yOffset, 80, 80);
+        }
+        text("￥"+clickedImages[i], 160, yOffset);
+
+        yOffset += spacing; // Y座標にスペースを足して更新
+    }
+
+    // text('小計(税抜8%)',-160,yOffset + 10);
+    // text('消費税等(税抜8%)',-160,yOffset + 30);
+    textAlign(CENTER); // テキストの配置
+    text('またのご利用をお待ちしております',0,yOffset + 100);
+    // text('お買い上げ詳細は以下の通りです。',-160,yOffset + 110);
+
+    textSize(25);
+    text(clickedImages.join(''),90,yOffset + 60)
+
+    //点線
+    stroke(0);
+    strokeWeight(1.5);
+    drawingContext.setLineDash([13, 7]);
+    line(-170, yOffset - 20, 170,yOffset - 20);
+
+    //数字
+    textFont("'seiwa-do-l'");
+    textAlign(RIGHT); // テキストの配置
+    textSize(17);
+
+    // 圧縮
+    push();
+    noStroke();
+    fill(0); // テキストの色
+    textAlign(CENTER, CENTER); // テキストの配置
+    textSize(50); // テキストのサイズ
+    translate(0, 0);//ここで位置を決めるとスケールで位置が変わらない
+    scale(1, 0.5); // x方向は1倍、y方向は0.5倍に縮める
+    text('きろく', 0 , -390); // テキストをキャンバスの中央に描画
+    textAlign(LEFT); // テキストの配置
+    textSize(40); // テキストのサイズ
+    text('合計',-160,(yOffset + 10) * 2 + 100);
+    pop();
+
+    // textFont("'kozuka-gothic-pr6n'");
+
+    // 戻るボタンをリロードボタンに変更
+    backButton = createButton("はじめから");
+    backButton.mousePressed(() => location.reload());
+    backButton.position(width - width / 8, height - height / 7);
+    backButton.style("width", "100px");
+    backButton.style("height", "100px");
+    backButton.style("border-radius", "100px");
+    backButton.style("background", "#fffffff");
+    backButton.style("border", "none");
+}
+
+        
+        
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+            button.position(width - width / 8, height - height / 7);
+        }
+    </script>
 </body>
 </html>
