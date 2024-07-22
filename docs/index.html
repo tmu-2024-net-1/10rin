@@ -134,7 +134,12 @@
             if (mouseIsPressed && dist(mouseX - width / 2, mouseY - height / 2, 0, 340 * ratioY) < windowWidth * 0.05) {
                 addClickedImage(45);
             }
-                    
+
+            // textFont("'seiwa-do-l'");
+            // textAlign(LEFT, TOP);
+            // textSize(50);
+            // text('ゆびもじきろく', 10, 10);
+    
 
             // テキストを左上に表示するためにpush/popを使用
             push();
@@ -144,8 +149,10 @@
             textAlign(LEFT, TOP);
             textSize(50);
             text('ゆびもじきろく', 10, 10);
-            textSize(20);
-            text('好きな図形をクリックして', 500, 30);
+            textSize(15);
+            textAlign(CENTER);
+
+            text('好きな手をクリック', width / 2, 60);
 
 
             // クリックされた画像の記録を表示
@@ -288,4 +295,7 @@
         }
     </script>
 </body>
+<!-- <footer>
+    <p>作成者:nonokawa</p>
+</footer> -->
 </html>
